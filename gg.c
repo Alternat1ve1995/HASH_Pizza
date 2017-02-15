@@ -1,4 +1,4 @@
-#include "pizza_header.h"
+#include "pizza.h"
 
 static int          ft_amount(int a, int max)
 {
