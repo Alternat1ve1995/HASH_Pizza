@@ -1,7 +1,9 @@
-static int             ft_amount(int a, int max)
+#include "pizza_header.h"
+
+static int          ft_amount(int a, int max)
 {
-    int     i;
-    static int     amount = 0;
+    int             i;
+    static int      amount = 0;
 
     i = 0;
     while (++i <= a)
@@ -12,44 +14,31 @@ static int             ft_amount(int a, int max)
     return (amount);
 }
 
-static shapes_lst     *ft_find_shapes(shapes_lst *lst, int nb, int x)
+static t_fig        *ft_find_shapes(t_fig *lst, int nb, int x)
 {
-    shapes_lst  *adr;
-
-    adr = lst;
     if (nb < x)
-        return (adr);
+        return (lst);
     if (nb % x == 0)
     {
-        lst->x = x - 1;
+    lst->x = x - 1;
         lst->y = nb / x - 1;
-        adr = ft_find_shapes(lst + 1, nb, x + 1);
+        lst += 1;
     }
-    else
-        adr = ft_find_shapes(lst, nb, x + 1);
-    return (adr);
+    return (ft_find_shapes(lst, nb, x + 1));
 }
 
-shapes_lst      *ft_possible_shapes(int min, int sq, int **inp)
+t_fig               *ft_possible_shapes(int min, int sq, int **inp)
 {
-    shapes_lst  *lst;
-    shapes_lst  *list;
+    t_fig       *lst;
+    t_fig       *list;
     int         amount;
-    int         len;
-    int         i;
 
-    len = 0;
-    i = 0;
-    min = min * 2;
+    min = min * 2 - 1;
     amount = ft_amount(min, sq);
-    lst = (shapes_lst *)malloc(sizeof(shapes_lst) * amount);
+    lst = (t_fig *)malloc(sizeof(t_fig) * amount);
     list = lst;
-    while (min <= sq)
-    {
+    while (++min <= sq)
         lst = ft_find_shapes(lst, min, 1);
-        min++;
-    }
-
-    *inp[4] = amount;
+    (*inp)[4] = amount;
     return (list);
 }
